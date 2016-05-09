@@ -23,6 +23,8 @@ public class MainMenu : MonoBehaviour
 		get { return Screen.height* RelativeButtonHeight; }
 	}
 
+	private string _text;
+
 	void OnGUI() {
 		// Display Background Texture
 		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BackgroundTexture);
@@ -30,15 +32,20 @@ public class MainMenu : MonoBehaviour
 		//Display Buttons
 		if(GUI.Button(new Rect(DistanceLeft, Screen.height*.3f, ButtonWidth, ButtonHeight), "Play"))
 		{
-			print("Start pressed!");
+			_text = "Start pressed!";
 		}
 		if (GUI.Button(new Rect(DistanceLeft, Screen.height * .5f, ButtonWidth, ButtonHeight), "Options"))
 		{
-			print("Options pressed!");
+			_text = "Options pressed!";
 		}
 		if (GUI.Button(new Rect(DistanceLeft, Screen.height * .7f, ButtonWidth, ButtonHeight), "Highscore"))
 		{
-			print("Highscore pressed!");
+			_text = "Highscore pressed!";
+		}
+
+		if (_text != null)
+		{
+			_text = GUI.TextField(new Rect(DistanceLeft, Screen.height * .1f, ButtonWidth, ButtonHeight), _text);
 		}
 	}
 }
