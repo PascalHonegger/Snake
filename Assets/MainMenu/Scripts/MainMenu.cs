@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
@@ -30,9 +31,11 @@ public class MainMenu : MonoBehaviour
 		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BackgroundTexture);
 
 		//Display Buttons
+
 		if(GUI.Button(new Rect(DistanceLeft, Screen.height*.3f, ButtonWidth, ButtonHeight), "Play"))
 		{
 			_text = "Start pressed!";
+			SceneManager.LoadScene(1);
 		}
 		if (GUI.Button(new Rect(DistanceLeft, Screen.height * .5f, ButtonWidth, ButtonHeight), "Options"))
 		{
