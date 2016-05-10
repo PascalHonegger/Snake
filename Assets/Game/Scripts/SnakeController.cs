@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class SnakeController : MonoBehaviour
 {
@@ -23,19 +24,19 @@ public class SnakeController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+		if (CrossPlatformInputManager.GetAxis("Horizontal") < 0)
 		{
 			_turn.z = 90;
 		}
-		else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+		else if (CrossPlatformInputManager.GetAxis("Vertical") > 0)
 		{
 			_turn.z = 0;
 		}
-		else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+		else if (CrossPlatformInputManager.GetAxis("Horizontal") > 0)
 		{
 			_turn.z = 270;
 		}
-		else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+		else if (CrossPlatformInputManager.GetAxis("Vertical") < 0)
 		{
 			_turn.z = 180;
 		}
