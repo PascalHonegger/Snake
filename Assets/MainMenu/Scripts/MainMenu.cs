@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Advertisements;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
 	public Texture BackgroundTexture;
+	public Texture VolumeTexture;
 
 	public float RelativeDistanceLeft;
 	public float RelativeButtonWidth;
@@ -24,31 +26,26 @@ public class MainMenu : MonoBehaviour
 		get { return Screen.height* RelativeButtonHeight; }
 	}
 
-	private string _text;
-
 	void OnGUI() {
 		// Display Background Texture
 		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BackgroundTexture);
 
 		//Display Buttons
-
 		if(GUI.Button(new Rect(DistanceLeft, Screen.height*.3f, ButtonWidth, ButtonHeight), "Play"))
 		{
-			_text = "Start pressed!";
 			SceneManager.LoadScene(1);
 		}
-		if (GUI.Button(new Rect(DistanceLeft, Screen.height * .5f, ButtonWidth, ButtonHeight), "Options"))
-		{
-			_text = "Options pressed!";
-		}
-		if (GUI.Button(new Rect(DistanceLeft, Screen.height * .7f, ButtonWidth, ButtonHeight), "Highscore"))
-		{
-			_text = "Highscore pressed!";
-		}
 
-		if (_text != null)
+		GUI.Label(new Rect(DistanceLeft, Screen.height * .7f - 50, ButtonWidth, 100), VolumeTexture);
+
+		AudioListener.volume = GUI.HorizontalSlider(new Rect(DistanceLeft + 100, Screen.height * .7f, ButtonWidth - 100, 20), AudioListener.volume, 0, 1);
+	}
+
+	public void ShowAd()
+	{
+		if (Advertisement.IsReady())
 		{
-			_text = GUI.TextField(new Rect(DistanceLeft, Screen.height * .1f, ButtonWidth, ButtonHeight), _text);
+			Advertisement.Show();
 		}
 	}
 }
