@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -24,24 +25,27 @@ public class SnakeController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (CrossPlatformInputManager.GetAxis("Horizontal") < 0)
+		var horizontalAxis = CrossPlatformInputManager.GetAxis("Horizontal");
+		var verticalAxis = CrossPlatformInputManager.GetAxis("Vertical");
+
+		if (Mathf.Abs(horizontalAxis) > Mathf.Abs(verticalAxis))
 		{
-			_turn.z = 90;
+			_turn.z = horizontalAxis < 0 ? 90 : 270;
 		}
-		else if (CrossPlatformInputManager.GetAxis("Vertical") > 0)
+		else if (Mathf.Abs(horizontalAxis) < Mathf.Abs(verticalAxis))
 		{
-			_turn.z = 0;
-		}
-		else if (CrossPlatformInputManager.GetAxis("Horizontal") > 0)
-		{
-			_turn.z = 270;
-		}
-		else if (CrossPlatformInputManager.GetAxis("Vertical") < 0)
-		{
-			_turn.z = 180;
+			_turn.z = verticalAxis < 0 ? 180 : 0;
 		}
 
 		transform.eulerAngles = _turn;
+	}
+
+	void OnCollisonEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "Wall")
+		{
+			Time.timeScale = 0;
+		}
 	}
 
 	private void Move()
