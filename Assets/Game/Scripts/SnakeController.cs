@@ -1,13 +1,11 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class SnakeController : MonoBehaviour
 {
 	public float MoveTime;
 
-	private Rigidbody2D rb;
+	public GameObject BodyPrefab;
 
 	private Vector3 _turn = new Vector3
 	{
@@ -18,8 +16,6 @@ public class SnakeController : MonoBehaviour
 	// Use this for initialization
 	void Start () {
 		InvokeRepeating("Move", MoveTime, MoveTime);
-
-		rb = GetComponent<Rigidbody2D>();
 	}
 
 	// Update is called once per frame
@@ -30,21 +26,40 @@ public class SnakeController : MonoBehaviour
 
 		if (Mathf.Abs(horizontalAxis) > Mathf.Abs(verticalAxis))
 		{
-			_turn.z = horizontalAxis < 0 ? 90 : 270;
+			if (horizontalAxis < 0)
+			{
+				_turn.z = 90;
+			}
+			else
+			{
+				_turn.z = 270;
+			}
 		}
 		else if (Mathf.Abs(horizontalAxis) < Mathf.Abs(verticalAxis))
 		{
-			_turn.z = verticalAxis < 0 ? 180 : 0;
+			if (verticalAxis < 0)
+			{
+				_turn.z = 180;
+			}
+			else
+			{
+				_turn.z = 0;
+			}
 		}
 
 		transform.eulerAngles = _turn;
 	}
 
-	void OnCollisonEnter2D(Collision2D collision)
+	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Wall")
+		if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Body")
 		{
 			Time.timeScale = 0;
+		}
+		else if (collision.gameObject.tag == "Fruit")
+		{
+			collision.gameObject.GetComponent<FruitScript>().MoveAway();
+			Instantiate(BodyPrefab, new Vector3(transform.localPosition.x, transform.localPosition.y - 1), transform.localRotation);
 		}
 	}
 

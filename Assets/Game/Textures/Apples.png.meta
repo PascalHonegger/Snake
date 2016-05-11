@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: ea2590cc176cf6c4da963918a42be5c8
-timeCreated: 1462907451
+timeCreated: 1462995422
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -48,7 +48,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 8
+  spritePixelsToUnits: 10
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -60,9 +60,9 @@ TextureImporter:
         x: 0
         y: 0
         width: 8
-        height: 16
+        height: 10
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Apples_1
@@ -71,9 +71,9 @@ TextureImporter:
         x: 8
         y: 0
         width: 8
-        height: 16
+        height: 10
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Apples_2
@@ -82,9 +82,9 @@ TextureImporter:
         x: 16
         y: 0
         width: 8
-        height: 16
+        height: 10
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Apples_3
@@ -93,9 +93,9 @@ TextureImporter:
         x: 24
         y: 0
         width: 8
-        height: 16
+        height: 10
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     outline: []

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Advertisements;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
@@ -39,13 +38,5 @@ public class MainMenu : MonoBehaviour
 		GUI.Label(new Rect(DistanceLeft, Screen.height * .7f - 50, ButtonWidth, 100), VolumeTexture);
 
 		AudioListener.volume = GUI.HorizontalSlider(new Rect(DistanceLeft + 100, Screen.height * .7f, ButtonWidth - 100, 20), AudioListener.volume, 0, 1);
-	}
-
-	public void ShowAd()
-	{
-		if (Advertisement.IsReady())
-		{
-			Advertisement.Show();
-		}
 	}
 }
