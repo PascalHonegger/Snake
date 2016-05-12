@@ -1,39 +1,20 @@
 ﻿using UnityEngine;
 
-public class BodyPartController : MonoBehaviour {
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+public class BodyPartController : MonoBehaviour
+{
+	private SpriteRenderer _spriteRenderer;
 
-	/*
-void Start () {
-	spriteRenderer = GetComponent<SpriteRenderer>();
-}
-	
-// Update is called once per frame
-void Update () {
-	if (transform.eulerAngles.z < 45)
+	public Sprite UpSprite;
+	public Sprite UpLeftSprite;
+	public Sprite LeftSprite;
+	public Sprite LeftDownSprite;
+	public Sprite DownSprite;
+	public Sprite DownRightSprite;
+	public Sprite RightSprite;
+	public Sprite RightUpSprite;
+
+	void Start ()
 	{
-		spriteRenderer.sprite = upSprite;
+		_spriteRenderer = GetComponent<SpriteRenderer>();
 	}
-	else if (transform.eulerAngles.z < 135)
-	{
-		spriteRenderer.sprite = leftSprite;
-	}
-	else if (transform.eulerAngles.z < 225)
-	{
-		spriteRenderer.sprite = downSprite;
-	}
-	else
-	{
-		spriteRenderer.sprite = rightSprite;
-	}
-}
-	*/
 }

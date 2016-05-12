@@ -2,7 +2,6 @@
 using System.Linq;
 using UnityEngine;
 
-
 public class FruitScript : MonoBehaviour
 {
 	public Sprite[] Sprites;
@@ -10,7 +9,6 @@ public class FruitScript : MonoBehaviour
 	private SpriteRenderer _spriteRenderer;
 	private Queue<Sprite> _spriteQueue;
 
-	// Use this for initialization
 	void Start ()
 	{
 		_spriteRenderer = GetComponent<SpriteRenderer>();

@@ -5,6 +5,8 @@ public class SnakeController : MonoBehaviour
 {
 	public float MoveTime;
 
+	public Vector3 StartPosition;
+
 	public GameObject BodyPrefab;
 
 	private Vector3 _turn = new Vector3
@@ -13,12 +15,29 @@ public class SnakeController : MonoBehaviour
 		y = 0
 	};
 
-	// Use this for initialization
-	void Start () {
+	private MoveAndGrowController MoveScript
+	{
+		get { return GetComponent<MoveAndGrowController>(); }
+	}
+
+	void Start ()
+	{
+		MoveScript.DestroyOther();
+
+		transform.localPosition = StartPosition;
+
+		_turn.z = 0;
+		Update();
+
+		_gameOver = false;
+
+		Time.timeScale = 1;
+
+		MoveScript.CreateDefaultSnake(BodyPrefab);
+
 		InvokeRepeating("Move", MoveTime, MoveTime);
 	}
 
-	// Update is called once per frame
 	void Update()
 	{
 		var horizontalAxis = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -26,22 +45,22 @@ public class SnakeController : MonoBehaviour
 
 		if (Mathf.Abs(horizontalAxis) > Mathf.Abs(verticalAxis))
 		{
-			if (horizontalAxis < 0)
+			if (horizontalAxis < 0 && Mathf.RoundToInt(MoveScript.NextBodyPart.transform.localPosition.x) >= Mathf.RoundToInt(transform.localPosition.x))
 			{
 				_turn.z = 90;
 			}
-			else
+			else if(Mathf.RoundToInt(MoveScript.NextBodyPart.transform.localPosition.x) <= Mathf.RoundToInt(transform.localPosition.x))
 			{
 				_turn.z = 270;
 			}
 		}
 		else if (Mathf.Abs(horizontalAxis) < Mathf.Abs(verticalAxis))
 		{
-			if (verticalAxis < 0)
+			if (verticalAxis < 0 && Mathf.RoundToInt(MoveScript.NextBodyPart.transform.localPosition.y) >= Mathf.RoundToInt(transform.localPosition.y))
 			{
 				_turn.z = 180;
 			}
-			else
+			else if (Mathf.RoundToInt(MoveScript.NextBodyPart.transform.localPosition.y) <= Mathf.RoundToInt(transform.localPosition.y))
 			{
 				_turn.z = 0;
 			}
@@ -50,21 +69,37 @@ public class SnakeController : MonoBehaviour
 		transform.eulerAngles = _turn;
 	}
 
+	private bool _gameOver = false;
+
+	void OnGUI()
+	{
+		if (_gameOver)
+		{
+			if (GUI.Button(new Rect(Screen.width*.3f, Screen.height*.3f, Screen.width*.4f, Screen.height*.4f), "Restart?"))
+			{
+				Start();
+			}
+		}
+	}
+
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Body")
 		{
 			Time.timeScale = 0;
+			CancelInvoke("Move");
+			_gameOver = true;
 		}
 		else if (collision.gameObject.tag == "Fruit")
 		{
 			collision.gameObject.GetComponent<FruitScript>().MoveAway();
-			Instantiate(BodyPrefab, new Vector3(transform.localPosition.x, transform.localPosition.y - 1), transform.localRotation);
+			GetComponent<MoveAndGrowController>().AddBodyPart(BodyPrefab);
 		}
 	}
 
 	private void Move()
 	{
+		GetComponent<MoveAndGrowController>().MoveTo(transform.localPosition);
 		transform.Translate(Vector3.up);
 	}
 }
