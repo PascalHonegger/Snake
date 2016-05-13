@@ -9,6 +9,8 @@ public class SnakeController : MonoBehaviour
 
 	public GameObject BodyPrefab;
 
+	public BoxCollider2D boxCollider;
+
 	private Vector3 _turn = new Vector3
 	{
 		x = 0,
@@ -45,22 +47,22 @@ public class SnakeController : MonoBehaviour
 
 		if (Mathf.Abs(horizontalAxis) > Mathf.Abs(verticalAxis))
 		{
-			if (horizontalAxis < 0 && Mathf.RoundToInt(MoveScript.NextBodyPart.transform.localPosition.x) >= Mathf.RoundToInt(transform.localPosition.x))
+			if (horizontalAxis < 0 && Mathf.Floor(MoveScript.NextBodyPart.transform.localPosition.x) >= Mathf.Floor(transform.localPosition.x))
 			{
 				_turn.z = 90;
 			}
-			else if(Mathf.RoundToInt(MoveScript.NextBodyPart.transform.localPosition.x) <= Mathf.RoundToInt(transform.localPosition.x))
+			else if(Mathf.Floor(MoveScript.NextBodyPart.transform.localPosition.x) <= Mathf.Floor(transform.localPosition.x))
 			{
 				_turn.z = 270;
 			}
 		}
 		else if (Mathf.Abs(horizontalAxis) < Mathf.Abs(verticalAxis))
 		{
-			if (verticalAxis < 0 && Mathf.RoundToInt(MoveScript.NextBodyPart.transform.localPosition.y) >= Mathf.RoundToInt(transform.localPosition.y))
+			if (verticalAxis < 0 && Mathf.Floor(MoveScript.NextBodyPart.transform.localPosition.y) >= Mathf.Floor(transform.localPosition.y))
 			{
 				_turn.z = 180;
 			}
-			else if (Mathf.RoundToInt(MoveScript.NextBodyPart.transform.localPosition.y) <= Mathf.RoundToInt(transform.localPosition.y))
+			else if (Mathf.Floor(MoveScript.NextBodyPart.transform.localPosition.y) <= Mathf.Floor(transform.localPosition.y))
 			{
 				_turn.z = 0;
 			}
@@ -96,10 +98,58 @@ public class SnakeController : MonoBehaviour
 			GetComponent<MoveAndGrowController>().AddBodyPart(BodyPrefab);
 		}
 	}
-
+	
 	private void Move()
 	{
-		GetComponent<MoveAndGrowController>().MoveTo(transform.localPosition);
-		transform.Translate(Vector3.up);
+		float x = transform.localPosition.x;
+		float y = transform.localPosition.y;
+		switch (Mathf.RoundToInt(_turn.z))
+		{
+			case 0:
+				y++;
+				break;
+			case 90:
+				x--;
+				break;
+			case 180:
+				y--;
+				break;
+			case 270:
+				x++;
+				break;
+		}
+
+
+		Vector3 endpoint = new Vector3(x,y);
+
+		if (!gameObject.CompareTag("Player") || (TryMove(endpoint) && gameObject.CompareTag("Player")))
+		{
+			GetComponent<MoveAndGrowController>().MoveTo(transform.localPosition);
+			transform.Translate(Vector3.up);
+		}
+		else
+		{
+			Time.timeScale = 0;
+			CancelInvoke("Move");
+			_gameOver = true;
+		}
+	}
+
+	public bool TryMove(Vector3 endpoint)
+	{
+		boxCollider.enabled = false;
+		RaycastHit2D hit;
+
+		hit = Physics2D.Linecast(transform.localPosition, endpoint);
+
+		boxCollider.enabled = true;
+
+		if (hit.transform == null || hit.collider.gameObject.CompareTag("Fruit"))
+		{
+			return true;
+		}
+
+		return false;
+
 	}
 }
