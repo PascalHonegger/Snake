@@ -2,13 +2,16 @@
 
 public class MoveAndGrowController : MonoBehaviour {
 
-	public GameObject NextBodyPart;
+	public MoveAndGrowController PreviousBodyPart;
+	public MoveAndGrowController NextBodyPart;
 
-	public void AddBodyPart(GameObject bodyPrefab)
+	public void AddBodyPart(GameObject bodyPrefab, MoveAndGrowController previousBodyPart)
 	{
+		PreviousBodyPart = previousBodyPart;
+
 		if (NextBodyPart != null)
 		{
-			NextBodyPart.GetComponent<MoveAndGrowController>().AddBodyPart(bodyPrefab);
+			NextBodyPart.AddBodyPart(bodyPrefab, this);
 		}
 		else
 		{
@@ -24,7 +27,7 @@ public class MoveAndGrowController : MonoBehaviour {
 		}
 	}
 
-	public void Destroy()
+	private void Destroy()
 	{
 		DestroyOther();
 		Destroy(gameObject);
@@ -33,8 +36,11 @@ public class MoveAndGrowController : MonoBehaviour {
 	private void CreateBodyPart(GameObject bodyPrefab, Vector3 location)
 	{
 		var part = Instantiate(bodyPrefab);
-		part.GetComponent<MoveAndGrowController>().MoveTo(location);
-		NextBodyPart = part;
+		var script = part.GetComponent<MoveAndGrowController>();
+		script.PreviousBodyPart = this;
+		script.MoveTo(location);
+
+		NextBodyPart = script;
 	}
 
 	public void MoveTo(Vector3 localPosition)
@@ -50,6 +56,6 @@ public class MoveAndGrowController : MonoBehaviour {
 	public void CreateDefaultSnake(GameObject bodyPrefab)
 	{
 		CreateBodyPart(bodyPrefab, new Vector3(transform.localPosition.x, transform.localPosition.y - 1));
-		AddBodyPart(bodyPrefab);
+		AddBodyPart(bodyPrefab, this);
 	}
 }

@@ -25,7 +25,13 @@ public class MainMenu : MonoBehaviour
 		get { return Screen.height* RelativeButtonHeight; }
 	}
 
-	void OnGUI() {
+	void Start()
+	{
+		AudioListener.volume = 0.5f;
+	}
+
+	void OnGUI()
+	{
 		// Display Background Texture
 		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BackgroundTexture);
 

@@ -31,9 +31,9 @@ public class SnakeController : MonoBehaviour
 
 		_gameOver = false;
 
-		Time.timeScale = 1;
-
 		MoveScript.CreateDefaultSnake(BodyPrefab);
+
+		Time.timeScale = 1;
 
 		InvokeRepeating("Move", MoveTime, MoveTime);
 	}
@@ -69,7 +69,7 @@ public class SnakeController : MonoBehaviour
 		transform.eulerAngles = _turn;
 	}
 
-	private bool _gameOver = false;
+	private bool _gameOver;
 
 	void OnGUI()
 	{
@@ -93,13 +93,14 @@ public class SnakeController : MonoBehaviour
 		else if (collision.gameObject.tag == "Fruit")
 		{
 			collision.gameObject.GetComponent<FruitScript>().MoveAway();
-			GetComponent<MoveAndGrowController>().AddBodyPart(BodyPrefab);
+			MoveScript.AddBodyPart(BodyPrefab, MoveScript);
 		}
 	}
 
 	private void Move()
 	{
-		GetComponent<MoveAndGrowController>().MoveTo(transform.localPosition);
+		MoveScript.MoveTo(transform.localPosition);
 		transform.Translate(Vector3.up);
+		MoveScript.NextBodyPart.GetComponent<BodyPartController>().AdjustTexture();
 	}
 }
