@@ -28,6 +28,19 @@ public class FruitScript : MonoBehaviour
 		FillQueueIfEmtpy();
 		_spriteRenderer.sprite = _spriteQueue.Dequeue();
 
-		transform.Translate(Vector3.left);
+		ChangePosition();
+	}
+
+	private void ChangePosition()
+	{
+		transform.localPosition = new Vector3(Random.Range(-15, 14) + 0.5f, Random.Range(-8, 7) + 0.5f);
+	}
+
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "Body")
+		{
+			ChangePosition();
+		}
 	}
 }
