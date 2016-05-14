@@ -36,6 +36,7 @@ public class MoveAndGrowController : MonoBehaviour {
 	private void CreateBodyPart(GameObject bodyPrefab, Vector3 location)
 	{
 		var part = Instantiate(bodyPrefab);
+		part.transform.parent = transform.parent;
 		var script = part.GetComponent<MoveAndGrowController>();
 		script.PreviousBodyPart = this;
 		script.MoveTo(location);
@@ -45,21 +46,18 @@ public class MoveAndGrowController : MonoBehaviour {
 
 	public void MoveTo(Vector3 localPosition)
 	{
-
 			if (NextBodyPart != null)
 			{
 				NextBodyPart.GetComponent<MoveAndGrowController>().MoveTo(transform.localPosition);
 			}
 
 			transform.localPosition = localPosition;
-
 	}
 
 	public void CreateDefaultSnake(GameObject bodyPrefab)
 	{
 		CreateBodyPart(bodyPrefab, new Vector3(transform.localPosition.x, transform.localPosition.y - 1));
-		AddBodyPart(bodyPrefab, this);
+
+		NextBodyPart.AddBodyPart(bodyPrefab, this);
 	}
-
-
 }

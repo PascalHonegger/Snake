@@ -4,6 +4,11 @@ using UnityEngine.EventSystems;
 
 public class BodyPartController : MonoBehaviour
 {
+	public Sprite HeadLeftSprite;
+	public Sprite HeadUpSprite;
+	public Sprite HeadRightSprite;
+	public Sprite HeadDownSprite;
+
 	public Sprite TailLeftSprite;
 	public Sprite TailUpSprite;
 	public Sprite TailRightSprite;
@@ -37,6 +42,28 @@ public class BodyPartController : MonoBehaviour
 					break;
 				case MoveDirection.Down:
 					sprite = TailUpSprite;
+					break;
+				case MoveDirection.None:
+					throw new ArgumentOutOfRangeException("previousPartDirection", previousPartDirection, null);
+				default:
+					throw new ArgumentOutOfRangeException("previousPartDirection", previousPartDirection, null);
+			}
+		}
+		else if (previousPartDirection == MoveDirection.None)
+		{
+			switch (nextPartDirection)
+			{
+				case MoveDirection.Left:
+					sprite = HeadRightSprite;
+					break;
+				case MoveDirection.Up:
+					sprite = HeadDownSprite;
+					break;
+				case MoveDirection.Right:
+					sprite = HeadLeftSprite;
+					break;
+				case MoveDirection.Down:
+					sprite = HeadUpSprite;
 					break;
 				case MoveDirection.None:
 					throw new ArgumentOutOfRangeException("previousPartDirection", previousPartDirection, null);
@@ -88,7 +115,7 @@ public class BodyPartController : MonoBehaviour
 
 	public void AdjustTexture()
 	{
-		SetTexture(RelativePosition(MoveScript.PreviousBodyPart.transform.localPosition), MoveScript.NextBodyPart == null ? MoveDirection.None : RelativePosition(MoveScript.NextBodyPart.transform.localPosition));
+		SetTexture(MoveScript.PreviousBodyPart == null ? MoveDirection.None : RelativePosition(MoveScript.PreviousBodyPart.transform.localPosition), MoveScript.NextBodyPart == null ? MoveDirection.None : RelativePosition(MoveScript.NextBodyPart.transform.localPosition));
 		if (MoveScript.NextBodyPart != null) MoveScript.NextBodyPart.GetComponent<BodyPartController>().AdjustTexture();
 	}
 
