@@ -38,9 +38,6 @@ public class FruitScript : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Body")
-		{
-			ChangePosition();
-		}
+		ChangePosition();
 	}
 }

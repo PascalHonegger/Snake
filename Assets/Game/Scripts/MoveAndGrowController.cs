@@ -46,18 +46,18 @@ public class MoveAndGrowController : MonoBehaviour {
 
 	public void MoveTo(Vector3 localPosition)
 	{
-			if (NextBodyPart != null)
-			{
-				NextBodyPart.GetComponent<MoveAndGrowController>().MoveTo(transform.localPosition);
-			}
-
-			transform.localPosition = localPosition;
+		if (NextBodyPart != null)
+		{
+			NextBodyPart.GetComponent<MoveAndGrowController>().MoveTo(transform.localPosition);
+		}
+		transform.localPosition = localPosition;
 	}
 
 	public void CreateDefaultSnake(GameObject bodyPrefab)
 	{
 		CreateBodyPart(bodyPrefab, new Vector3(transform.localPosition.x, transform.localPosition.y - 1));
 
+		NextBodyPart.AddBodyPart(bodyPrefab, this);
 		NextBodyPart.AddBodyPart(bodyPrefab, this);
 	}
 }

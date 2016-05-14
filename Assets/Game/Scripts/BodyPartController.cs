@@ -4,16 +4,19 @@ using UnityEngine.EventSystems;
 
 public class BodyPartController : MonoBehaviour
 {
+	[Header("Head")]
 	public Sprite HeadLeftSprite;
 	public Sprite HeadUpSprite;
 	public Sprite HeadRightSprite;
 	public Sprite HeadDownSprite;
 
+	[Header("Tail")]
 	public Sprite TailLeftSprite;
 	public Sprite TailUpSprite;
 	public Sprite TailRightSprite;
 	public Sprite TailDownSprite;
 
+	[Header("Body")]
 	public Sprite UpDownSprite;
 	public Sprite LeftRightSprite;
 
@@ -27,8 +30,13 @@ public class BodyPartController : MonoBehaviour
 	{
 		Sprite sprite = null;
 
+		var boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
+
+		boxCollider2D.enabled = true;
 		if (nextPartDirection == MoveDirection.None)
 		{
+			//The tail doesn't count as a collider, because it will move away
+			boxCollider2D.enabled = false;
 			switch (previousPartDirection)
 			{
 				case MoveDirection.Left:
